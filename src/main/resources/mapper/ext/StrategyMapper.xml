@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.StrategyMapper">
+
+
+    <insert parameterType="Management.entity.strategy.MemberLimitStrategy" keyProperty="id" useGeneratedKeys="true" id="addMemberLimitStrategy">insert into member_limit_strategy(min_member,max_member)values (#{minMember},#{maxMember}) </insert>
+
+    <insert parameterType="Management.entity.strategy.CourseMemberLimitStrategy" keyProperty="id" useGeneratedKeys="true" id="addCourseMemberLimitStrategy">insert into course_member_limit_strategy(course_id,min_member,max_member)values (#{courseId},#{minMember},#{maxMember}) </insert>
+
+    <insert id="andCourseMemberLimitStrategy">insert into team_and_strategy(id,strategy_name,strategy_id) values (#{param1},#{param3},#{param2}) </insert>
+
+    <insert id="orCourseMemberLimitStrategy">insert into team_or_strategy(id,strategy_name,strategy_id) values (#{param1},#{param3},#{param2}) </insert>
+
+    <insert id="addConflictStrategy">insert into conflict_course_strategy(id,course_id) values (#{param1},#{param2}) </insert>
+
+    <select id="getAndMaxId" resultType="java.lang.Long">select MAX(id) from team_and_strategy </select>
+
+    <select id="getOrMaxId" resultType="java.lang.Long">select MAX(id) from team_or_strategy </select>
+
+    <select id="getConflictMaxId" resultType="java.lang.Long">select MAX(id) from conflict_course_strategy </select>
+
+    <select id="getSerialList" resultType="java.lang.Byte">select strategy_serial from team_strategy where course_id=#{param1} </select>
+
+    <insert id="combineAllStrategy">insert into team_strategy(course_id,strategy_serial,strategy_name,strategy_id) values (#{param1},#{param2},#{param3},#{param4}) </insert>
+
+
+    <select parameterType="java.lang.Long" id="getTeamStrategy" resultType="Management.entity.strategy.TeamStrategy">
+  select course_id courseId, strategy_serial strategySerial, strategy_name strategyName, strategy_id strategyId from team_strategy where course_id=#{param1} </select>
+
+    <select parameterType="java.lang.Long" id="getTeamAndStrategy" resultType="Management.entity.strategy.TeamAndStrategy">select id id, strategy_name strategyName, strategy_id strategyId from team_and_strategy where id=#{param1} </select>
+
+    <select parameterType="java.lang.Long" id="getTeamOrStrategy" resultType="Management.entity.strategy.TeamOrStrategy">select id id, strategy_name strategy, strategy_id strategyId from team_or_strategy where id=#{param1} </select>
+
+    <select parameterType="java.lang.Long" id="getConflictCourseStrategy" resultType="Management.entity.strategy.ConflictCourseStrategy">select id id, course_id courseId from conflict_course_strategy where id=#{param1} </select>
+
+    <select parameterType="java.lang.Long" id="getCourseMemberLimitStrategy" resultType="Management.entity.strategy.CourseMemberLimitStrategy">select id id, course_id courseId, min_member minMember, max_member maxMember from course_member_limit_strategy where id=#{param1} </select>
+
+    <select parameterType="java.lang.Long" id="getMemberLimitStrategy" resultType="Management.entity.strategy.MemberLimitStrategy">select id id, min_member minMember, max_member maxMember from member_limit_strategy where id=#{param1} </select>
+
+
+
+</mapper>

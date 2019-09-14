@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.TeamShareMapper">
+    <resultMap id="BaseResultMap" type="Management.entity.ShareTeamApplication">
+        <id column="id" property="id"/>
+        <result column="main_course_id" property="mainCourseId"/>
+        <result column="sub_course_id" property="subCourseId"/>
+        <result column="sub_course_teacher_id" property="subCourseTeacherId"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    
+    <select id="querryTeamShare" resultMap="BaseResultMap">
+        select id,main_course_id,sub_course_id from share_team_application
+        where status='1' and (main_course_id=#{courseId} or sub_course_id=#{courseId})
+    </select>
+
+
+    <select id="queryByMainSubCourseId" resultMap="BaseResultMap">
+        select * from share_team_application
+        where main_course_id=#{mainCourseId} and sub_course_id=#{subCourseId}
+    </select>
+
+    <delete id="deleteTeamShare">
+        delete from share_team_application
+        where id=#{teamShareId}
+    </delete>
+
+    <insert id="insertTeamShare" keyProperty="shareTeamApplication.id" useGeneratedKeys="true">
+        insert into share_team_application(main_course_id,
+                                           sub_course_id,
+                                           sub_course_teacher_id)
+        values (#{shareTeamApplication.mainCourseId},
+                #{shareTeamApplication.subCourseId},
+                #{shareTeamApplication.subCourseTeacherId})
+    </insert>
+
+    <update id="updateStatus">
+        update share_team_application
+        set status=#{status}
+        where id=#{id}
+    </update>
+
+    <select id="queryById" resultMap="BaseResultMap">
+        select id,main_course_id,sub_course_id from share_team_application
+        where id=#{id}
+    </select>
+    <select id="querryByTeacherId" resultMap="BaseResultMap">
+        select * from share_team_application
+        where sub_course_teacher_id=#{teacherId}
+        and  status is null
+    </select>
+
+    <select id="selectHistoryMessage" resultMap="BaseResultMap">
+        select * from share_team_application
+        where sub_course_teacher_id=#{teacherId}
+          and  (status=1 or status=0)
+    </select>
+
+    <select id="queryHaveShared" resultMap="BaseResultMap">
+        select id,main_course_id,sub_course_id from share_team_application
+        where id=#{id} and status='1'
+    </select>
+
+</mapper>

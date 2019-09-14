@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.TeamStudentMapper">
+
+    <resultMap id="BaseResultMap" type="Management.entity.TeamStudent">
+        <id property="teamId" column="team_id"/>
+        <id property="studentId" column="student_id"/>
+    </resultMap>
+
+
+
+    <insert id="addTeamMember">
+        insert into team_student(team_id,student_id)
+        values (#{teamId},
+                #{studentId})
+    </insert>
+    <delete id="removeTeamMember">
+        delete from team_student
+        where team_id=#{teamId} and student_id=#{studentId}
+    </delete>
+    <delete id="removeTeam">
+        delete from team_student
+        where team_id=#{teamId}
+    </delete>
+
+    <delete id="deleteSubRelation">
+        delete from team_student
+        where team_id in ( SELECT id from  team where course_id=#{courseId})
+    </delete>
+    <select id="selectById" resultMap="BaseResultMap">
+        select * from team_student
+        where team_id=#{teamId}
+        and student_id=#{studentId}
+    </select>
+
+</mapper>

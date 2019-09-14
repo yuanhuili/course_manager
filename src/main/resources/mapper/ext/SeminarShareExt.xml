@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.SeminarShareMapper">
+    <resultMap id="BaseResultMap" type="Management.entity.ShareSeminarApplivation">
+        <id column="id" property="id"/>
+        <result column="main_course_id" property="mainCourseId"/>
+        <result column="sub_course_id" property="subCourseId"/>
+        <result column="sub_course_teacher_id" property="subCourseTeacherId"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <resultMap id="Base" type="Management.entity.ShareSeminarApplivation">
+        <id column="id" property="id"/>
+        <result column="main_course_id" property="mainCourseId"/>
+        <result column="sub_course_id" property="subCourseId"/>
+        <result column="sub_course_id" property="subCourseId"/>
+        <result column="sub_course_id" property="subCourseId"/>
+        <result column="sub_course_id" property="subCourseId"/>
+    </resultMap>
+
+    <select id="querrySeminarShare" resultMap="BaseResultMap">
+        select id,main_course_id,sub_course_id from share_seminar_application
+        where status='1' and (main_course_id=#{courseId} or sub_course_id=#{courseId})
+    </select>
+
+    <select id="queryByMainSubCourseId" resultMap="BaseResultMap">
+        select * from share_seminar_application
+        where main_course_id=#{courseId} and sub_course_id=#{subCourseId}
+    </select>
+
+    <delete id="updaSeminarShare">
+        delete from share_seminar_application
+        where id=#{seminarShareId}
+    </delete>
+
+    <insert id="insertShareSeminar" keyProperty="shareSeminarApplivation.id" useGeneratedKeys="true">
+        insert into share_seminar_application(main_course_id,
+                                              sub_course_id,
+                                              sub_course_teacher_id)
+        values (#{shareSeminarApplivation.mainCourseId},
+                #{shareSeminarApplivation.subCourseId},
+                #{shareSeminarApplivation.subCourseTeacherId})
+    </insert>
+
+    <update id="updateStatus">
+        update share_seminar_application
+        set status=#{status}
+        where id=#{id}
+    </update>
+    <select id="queryById" resultMap="BaseResultMap">
+        select id,main_course_id,sub_course_id from share_seminar_application
+        where id=#{id}
+    </select>
+    <select id="selectByTeacherId" resultType="Management.entity.TeamValidApplication">
+
+    </select>
+
+    <select id="queryHaveShared" resultMap="BaseResultMap">
+        select id,main_course_id,sub_course_id from share_seminar_application
+        where id=#{id} and status='1'
+    </select>
+
+</mapper>

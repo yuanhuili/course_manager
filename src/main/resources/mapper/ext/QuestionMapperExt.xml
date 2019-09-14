@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.QuestionMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="Management.entity.Question">
+		<result column="id" property="id" />
+		<result column="klass_seminar_id" property="klassSeminarid" />
+		<result column="attendance_id" property="attendanceId" />
+		<result column="team_id" property="teamId" />
+		<result column="student_id" property="studentId" />
+		<result column="is_selected" property="isSelected" />
+		<result column="score" property="score" />
+
+	</resultMap>
+    <insert id="addQuestion" keyProperty="question.id" useGeneratedKeys="true">
+		INSERT INTO `question` (`klass_seminar_id`, `attendance_id`, `team_id`, `student_id`, `is_selected`)
+		VALUES (#{question.klassSeminarid}, #{question.attendanceId}, #{question.teamId}, #{question.studentId}, '0')
+
+	</insert>
+	<update id="updateQuestion">
+		update question
+		set score=#{question.score}
+		where id=#{question.id}
+	</update>
+	<select id="selectByClassSeminarId" resultMap="BaseResultMap">
+		select * from question
+		where klass_seminar_id=#{klassSeminarId}
+	</select>
+	<select id="selectById" resultMap="BaseResultMap">
+		select * from question
+		where id=#{questionId}
+	</select>
+    <select id="selectByAttendance" resultMap="BaseResultMap">
+		select * from question
+		where attendance_id =#{attendenceId}
+	</select>
+    <update id="selectQuestion">
+		update question
+		set is_selected='1'
+		where id=#{questionId}
+	</update>
+
+
+</mapper>

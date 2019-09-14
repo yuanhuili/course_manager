@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.RoundScoreMapper">
+
+    <resultMap id="BaseResultMap" type="Management.entity.RoundScore">
+        <id column="round_id" property="roundId"/>
+        <id column="team_id" property="teamId"/>
+        <result column="total_score" property="totalScore"/>
+        <result column="presentation_score" property="presentationScore"/>
+        <result column="report_score" property="reportScore"/>
+        <result column="question_score" property="questionScore"/>
+    </resultMap>
+    <update id="updateScore">
+        UPDATE `round_score` SET
+        `total_score`=#{roundScore.totalScore}, `presentation_score`=#{roundScore.presentationScore},
+        `question_score`=#{roundScore.questionScore}, `report_score`=#{roundScore.reportScore}
+        WHERE (`round_id`=#{roundScore.roundId})
+        AND (`team_id`=#{roundScore.teamId})
+    </update>
+
+    <select id="queryRoundScore" resultMap="BaseResultMap">
+        select round_id,team_id,total_score,presentation_score,report_score,question_score
+        from round_score
+        where round_id=#{roundId}
+    </select>
+
+
+    <select id="queryTeamRoundScore" resultMap="BaseResultMap">
+        select *
+        from round_score
+        where round_id=#{roundId} and team_id=#{teamId}
+    </select>
+
+    <insert id="insertTeamRoundScore">
+        insert into round_score(round_id,
+                                team_id,
+                                total_score,
+                                presentation_score,
+                                question_score,
+                                report_score)
+        values (#{roundScore.roundId},
+                #{roundScore.teamId},
+                #{roundScore.totalScore},
+                #{roundScore.presentationScore},
+                #{roundScore.questionScore},
+                #{roundScore.reportScore})
+    </insert>
+</mapper>

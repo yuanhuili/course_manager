@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.UserMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="Management.entity.User">
+		<result column="id" property="id" />
+		<result column="password" property="password" />
+		<result column="email" property="email" />
+		<result column="creat_time" property="creatTime" />
+		<result column="modified_time" property="modifiedTime" />
+		<result column="name" property="name" />
+		<result column="sex" property="sex" />
+		<result column="message_internal" property="messageInternal" />
+		<result column="is_student" property="isStudent" />
+	</resultMap>
+
+
+    <select id="queryById" resultMap="BaseResultMap">
+        select * from user
+        <where>
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+        </where>
+
+    </select>
+	<update id="updateFirst">
+		update user set password = #{password} where id = #{id}
+	</update>
+
+	<select id="selectByName" resultType="Management.entity.User">
+		select * from admin
+		<where>
+			<if test="account != null and account != ''">
+				and account = #{account}
+			</if>
+		</where>
+
+	</select>
+</mapper>

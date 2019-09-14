@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.KlassTeamMapper">
+
+    <resultMap id="BaseResultMap1" type="Management.entity.KlassTeam">
+        <id property="klassId" column="klass_id"/>
+        <id property="teamId" column="team_id"/>
+    </resultMap>
+    
+    <select id="queryByTeamId" resultMap="BaseResultMap1">
+        select * from klass_team where team_id=#{teamId}
+    </select>
+
+    <select id="queryByKlassId" resultMap="BaseResultMap1">
+        select * from klass_team where klass_id=#{klassId}
+    </select>
+
+
+    <insert id="insertKlassTeam">
+        insert into klass_team(klass_id,team_id)
+        values (#{klassId},
+                #{teamId})
+    </insert>
+
+
+    <delete id="deleteSubRelation">
+        delete from klass_team where klass_id=#{klassId}
+    </delete>
+
+
+</mapper>

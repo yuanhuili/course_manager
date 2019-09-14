@@ -1,0 +1,39 @@
+spring:
+  profiles:
+    active: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.52.88.176:3306/DB5_1?serverTimezone=Hongkong&useUnicode=true&characterEncoding=UTF-8
+    username: user5_1
+    password: ooad1
+  mail:
+    host: smtp.163.com
+          #发送者邮箱账号
+    username: li18805925575@163.com
+          #发送者密钥
+    password: cm8912mzj
+    default-encoding: utf-8
+    port: 465
+    properties:
+      mail:
+        debug:
+              true
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+  http:
+    multipart:
+      max-file-size:
+                    100mb
+      max-request-size:
+                        100mb
+
+
+
+
+
+mybatis-plus:
+  mapper-locations: mapper/ext/*.xml
+  type-aliases-package: Management.entity
+
+

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.ClassMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="Management.entity.Klass">
+		<result column="id" property="id" />
+		<result column="course_id" property="courseId" />
+		<result column="grade" property="grade" />
+		<result column="klass_serial" property="klassSerial" />
+		<result column="klass_time" property="klassTime" />
+		<result column="klass_location" property="klassLocation" />
+
+	</resultMap>
+	<delete id="deleteClass">
+		delete from klass
+		where id=#{class_id}
+		and course_id=#{id}
+	</delete>
+
+	<delete id="deleteByCourseId">
+		delete from klass
+		where id=#{courseId}
+	</delete>
+
+		<!--author li-->
+	<select id="querryKlasses" resultMap="BaseResultMap">
+		select * from klass where course_id=#{courseId}
+	</select>
+
+	<select id="queryKlassIdByCourseId" resultType="java.math.BigInteger">
+		select id from klass where course_id=#{courseId}
+	</select>
+
+	<select id="queryStudentClass" resultMap="BaseResultMap">
+		select *
+		from klass where id=#{klassId}
+	</select>
+
+	<!--author li-->
+	<insert id="insertClass"  keyProperty="klass.id" useGeneratedKeys="true">
+		insert into klass(course_id,grade,klass_serial,klass_time,klass_location)
+		values(#{klass.courseId},#{klass.grade},#{klass.klassSerial},#{klass.klassTime},#{klass.klassLocation})
+	</insert>
+	<select id="selectById" resultMap="BaseResultMap">
+		select * from klass
+		where id=#{klassId}
+	</select>
+
+	<select id="selectByRoundId" resultMap="BaseResultMap">
+		select * from klass_round where round_id=#{roundId}
+	</select>
+
+	<select resultType="java.lang.Long" id="getKlassIdByCourseAndStudent">
+			select klass_id
+			from klass_student
+			where course_id=#{param1}
+			and student_id=#{param2}
+	</select>
+
+
+
+</mapper>

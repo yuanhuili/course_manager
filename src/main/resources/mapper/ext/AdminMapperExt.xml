@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.AdminMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap1" type="Management.entity.Admin">
+		<result column="id" property="id" />
+		<result column="account" property="account" />
+		<result column="password" property="password" />
+	</resultMap>
+	<resultMap id="BaseResultMap" type="Management.entity.Attendance">
+		<result column="id" property="id" />
+		<result column="klass_seminar_id" property="klassSeminarId" />
+		<result column="team_id" property="teamId" />
+		<result column="team_order" property="teamOrder" />
+		<result column="is_present" property="isPresent" />
+		<result column="report_name" property="reportName" />
+		<result column="report_url" property="reportUrl" />
+		<result column="ppt_name" property="pptName" />
+		<result column="ppt_url" property="pptUrl" />
+	</resultMap>
+
+ <select id="selectByAccount" resultMap="BaseResultMap1">
+	 select * from admin
+	 <where>
+				 and account = #{account}
+	 </where>
+ </select>
+	<select id="selectByKlassSeminarId" resultMap="BaseResultMap">
+		select * from attendance
+		where klass_seminar_id=#{klassSeminarId}
+	</select>
+</mapper>

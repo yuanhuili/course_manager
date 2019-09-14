@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.KlassStudentMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="Management.entity.KlassStudentTable">
+		<result column="klass_id" property="klassId" />
+		<result column="student_id" property="studentId" />
+		<result column="course_id" property="courseId" />
+		<result column="team_id" property="teamId" />
+	</resultMap>
+
+	<insert id="add">
+		INSERT INTO `klass_student` (`klass_id`, `student_id`, `course_id`)
+		VALUES (#{link.klassId}, #{link.studentId}, #{link.courseId})
+	</insert>
+	<update id="update">
+		update klass_student
+		set
+		klass_id = #{link.id}
+		where
+		student_id = #{link.studentId}
+		and
+		course_id=#{link.courseId}
+	</update>
+
+
+	<select id="selectByCourseAndStudent" resultType="Management.entity.KlassStudentTable">
+		select * from klass_student
+		where
+		course_id=#{link.courseId}
+		and
+		student_id=#{link.studentId}
+	</select>
+
+	<select id="selectMyKlassId" resultMap="BaseResultMap">
+		select klass_id,student_id,course_id,team_id from klass_student
+		where course_id=#{courseId} and student_id=#{studentId}
+	</select>
+
+	<select id="selectMyCourse" resultMap="BaseResultMap">
+		select * from klass_student
+		where student_id=#{studentId}
+	</select>
+
+	<delete id="deleteByCourseId">
+		delete from klass_student where course_id=#{courseId}
+	</delete>
+
+	<select resultType="java.lang.Long" id="getKlassIdByCourseAndStudent">select klass_id from klass_student where course_id=#{param1} and student_id=#{param2} </select>
+    <select id="selectByStudentId" resultMap="BaseResultMap">
+		select * from
+	</select>
+
+</mapper>

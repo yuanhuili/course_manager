@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.TeamValidMapper">
+    <resultMap id="BaseResultMap" type="Management.entity.TeamValidApplication">
+        <id column="id" property="id"/>
+        <result column="team_id" property="teamId"/>
+        <result column="teacher_id" property="teacherId"/>
+        <result column="reason" property="reason"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+
+    <insert id="insertTeamValid">
+        insert into team_valid_application(team_id,
+                                           teacher_id,
+                                           reason,
+                                           status
+                                           )
+        values (#{teamValidApplication.teamId},
+                #{teamValidApplication.teacherId},
+                #{teamValidApplication.reason},
+                null)
+    </insert>
+    <update id="updateTeamValidReason">
+        update team_valid_application
+        set reason=#{teamValidApplication.reason},
+            status=null
+        where team_id=#{teamValidApplication.teamId}
+        and teacher_id=#{teamValidApplication.teacherId}
+    </update>
+    <select id="queryByTeamTeacherId" resultMap="BaseResultMap">
+        select id from  team_valid_application where team_id=#{teamId} and teacher_id=#{teacherId}
+    </select>
+    <select id="selectByTeacherId" resultMap="BaseResultMap">
+        select * from team_valid_application
+        where teacher_id=#{teacherId}
+        and  status is null
+    </select>
+    <select id="selectHistoryMessage" resultMap="BaseResultMap">
+        select * from team_valid_application
+        where teacher_id=#{teacherId}
+          and  (status=1 or status=0)
+    </select>
+    <delete id="deleteValid">
+        delete from team_valid_application
+        where team_id=#{teamId} and teacher_id=#{teacherId}
+    </delete>
+
+    <update id="updateStatus">
+        update team_valid_application
+        set status=#{status}
+        where team_id=#{id} and teacher_id=#{status}
+    </update>
+
+    <delete id="updateRecord">
+        update team_valid_application
+        set status=#{status}
+        where id=#{id}
+    </delete>
+
+    <select id="queryById" resultMap="BaseResultMap">
+        select * from team_valid_application
+        where id=#{id}
+    </select>
+
+
+</mapper>

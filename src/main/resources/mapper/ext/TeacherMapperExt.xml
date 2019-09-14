@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.TeacherMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="Management.entity.Teacher">
+		<result column="id" property="id" />
+		<result column="account" property="account" />
+		<result column="password" property="password" />
+		<result column="is_active" property="isActive" />
+		<result column="teacher_name" property="teacherName" />
+		<result column="email" property="email" />
+
+	</resultMap>
+
+
+ <select id="selectByAccount" resultMap="BaseResultMap">
+	 select * from teacher
+	 <where>
+				 and account = #{account}
+	 </where>
+ </select>
+	<select id="selectByName" resultMap="BaseResultMap">
+		select * from teacher
+		<where>
+			and teacher_name = #{name}
+		</where>
+	</select>
+	<update id="updatePasswordById">
+		update teacher
+		set
+		password = #{password}
+		where
+		id = #{id}
+	</update>
+	<select id="selectById" resultMap="BaseResultMap">
+		select * from teacher
+		<where>
+			and id = #{id}
+		</where>
+	</select>
+
+	<!--author liyuanhui-->
+	<select id="querryByCourseId" resultMap="BaseResultMap">
+		select t.id,t.account,t.teacher_name,t.email from teacher t
+		left join course c on t.id=c.teacher_id
+		where c.id=#{courseId}
+	</select>
+
+	<update id="updateEmail">
+		update teacher
+		set
+		email = #{email}
+		where
+		id = #{id}
+	</update>
+	<insert id="add">
+    INSERT INTO `teacher` (`account`, `password`, `teacher_name`, `is_active`, `email`)
+     VALUES (#{teacher.account}, #{teacher.password}, #{teacher.teacherName}, '0', #{teacher.email})
+	</insert>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select * from teacher
+		<where>
+		</where>
+	</select>
+	<update id="modifyInfo">
+		update teacher
+		set
+		account = #{teacher.account},
+		teacher_name = #{teacher.teacherName},
+		email = #{teacher.email}
+		where
+		id = #{teacher.id}
+	</update>
+	<update id="resetPassword">
+		update teacher
+		set
+		password='123456'
+		where
+		id = #{id}
+	</update>
+	<delete id="deleteById">
+		delete from teacher
+		where id=#{id}
+	</delete>
+	<update id="active">
+		update teacher
+		set
+		password = #{teacher.password},
+		is_active='1'
+		where
+		id = #{teacher.id}
+	</update>
+</mapper>

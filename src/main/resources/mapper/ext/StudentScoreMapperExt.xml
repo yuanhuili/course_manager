@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.StudentScoreMapper">
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="StudentResultMap" type="Management.controller.vo.CourseScoreVo">
+        <result property="courseName" column="course_name"/>
+        <collection property="roundScores" ofType="Management.controller.vo.RoundScoreVO">
+            <result property="roundId" column="round_id"/>
+            <collection property="seminarScores" ofType="Management.entity.SeminarScore">
+                <result property="presentationScore" column="presentation_score"/>
+                <result property="questionScore" column="question_score"/>
+                <result property="reportScore" column="report_score"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+
+    <select id="queryScoreById" resultMap="StudentResultMap">
+        select course_name,round_id,presentation_score,question_score,report_score from seminar as s left join seminar_score_table as sst on s.id=sst.klass_seminar_id left join klass_student_table as kst on
+         kst.team_id=sst.team_id left join course as c on c.id=s.course_id where s.course_id=#{courseId} and kst.student_id=#{studentId}
+    </select>
+
+
+</mapper>

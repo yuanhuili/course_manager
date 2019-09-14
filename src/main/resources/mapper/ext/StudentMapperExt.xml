@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.StudentMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="Management.entity.Student">
+		<id column="id" property="id" />
+		<result column="account" property="account" />
+		<result column="password" property="password" />
+		<result column="is_active" property="active" />
+		<result column="student_name" property="studentName" />
+		<result column="email" property="email" />
+	</resultMap>
+
+
+ <select id="selectByAccount" resultMap="BaseResultMap">
+	 select * from student
+	 <where>
+				 and account = #{account}
+	 </where>
+ </select>
+	<select id="selectByName" resultMap="BaseResultMap">
+		select * from student
+		<where>
+			and teacher_name = #{name}
+		</where>
+	</select>
+
+	<update id="updatePasswordById">
+		update student
+		set
+		password = #{password}
+		where
+		id = #{id}
+	</update>
+
+	<select id="selectById" resultMap="BaseResultMap">
+		select * from student
+		<where>
+			and id = #{id}
+		</where>
+	</select>
+	
+	<delete id="deleteById">
+		delete from student
+		where id=#{id}
+	</delete>
+
+	<update id="updateEmail">
+		update student
+		set
+		email = #{email}
+		where
+		id = #{id}
+	</update>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select * from student
+		<where>
+		</where>
+	</select>
+	<update id="modifyInfo">
+		update student
+		set
+		account = #{student.account},
+		student_name = #{student.studentName},
+		email = #{student.email}
+		where
+		id = #{student.id}
+	</update>
+	<update id="resetPassword">
+		update student
+		set
+		password='123456'
+		where
+		id = #{id}
+	</update>
+	<update id="active">
+		update student
+		set
+		password = #{student.password},
+		email = #{student.email},
+		is_active=1
+		where
+		id = #{student.id}
+	</update>
+	<update id="updateStudent">
+		update student
+		set
+		password = '123456',
+		student_name = #{student.studentName}
+		where
+		account = #{student.account}
+	</update>
+	<insert id="addStudent">
+	  INSERT INTO `student` (`account`, `password`, `is_active`,`student_name`)
+	  VALUES (#{student.account}, '123456','0', #{student.studentName})
+	</insert>
+
+	<!--author liyuanhui-->
+	<select id="queryTeamMember" resultMap="BaseResultMap">
+		select s.id,s.student_name,s.account,s.is_active,s.email
+		from team_student ts left join student s on ts.student_id=s.id
+		where ts.team_id=#{teamId} and s.id!=#{leaderId}
+	</select>
+
+	<!--author liyuanhui-->
+	<select id="querryNoTeam" resultMap="BaseResultMap">
+		select distinct s.id,s.student_name,s.account,s.is_active,s.email
+		from student s
+		left join klass_student ks on s.id=ks.student_id
+		where ks.course_id=#{courseId}
+		and s.id not in (select team_student.student_id
+			from team_student left join klass_team on team_student.team_id=klass_team.team_id
+			where klass_team.klass_id in (select klass_id
+			  							from klass_student where course_id=#{courseId}))
+	</select>
+
+	<update id="updateTeamStudent">
+		update student set
+		account=#{student.account},
+		student_name=#{student.studentName}
+		where id=#{student.id}
+	</update>
+
+	<select id="getMembers" parameterType="java.lang.Long" resultType="Management.entity.Student">
+	select student.id id,student.is_active isActive,student.student_name studentName,student.email email,student.account account,student.password password
+	from student,team_student
+	where team_student.team_id=#{param1}
+	 and team_student.student_id=student.id
+	</select>
+
+
+
+
+</mapper>

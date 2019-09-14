@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.AttendanceMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="Management.entity.Attendance">
+		<result column="id" property="id" />
+		<result column="klass_seminar_id" property="klassSeminarId" />
+		<result column="team_id" property="teamId" />
+		<result column="team_order" property="teamOrder" />
+		<result column="is_present" property="isPresent" />
+		<result column="report_name" property="reportName" />
+		<result column="report_url" property="reportUrl" />
+		<result column="ppt_name" property="pptName" />
+		<result column="ppt_url" property="pptUrl" />
+
+	</resultMap>
+    <insert id="addAttendance" keyProperty="attendance.id" useGeneratedKeys="true">
+		INSERT INTO `attendance` (`klass_seminar_id`, `team_id`, `team_order`, `is_present`)
+		VALUES (#{attendance.klassSeminarId}, #{attendance.teamId}, #{attendance.teamOrder}, '0')
+	</insert>
+    <update id="startPresentation">
+		update attendance
+		set is_present='1'
+		where id=#{attendanceId}
+	</update>
+	<update id="startTwoPresentation">
+		update attendance
+		set is_present='0'
+		where id!=#{attendanceId}
+	</update>
+	<update id="endPresentation">
+		update attendance
+		set is_present='0'
+		where id=#{attendenceId}
+	</update>
+    <select id="selectByKlassSeminarId" resultMap="BaseResultMap">
+		select * from attendance
+		where klass_seminar_id=#{klassSeminarId}
+	</select>
+	<delete id="deleteById">
+		delete from attendance
+		where id=#{attendanceId}
+	</delete>
+	<update id="updatePPT">
+		update attendance
+		set ppt_name=#{name},
+			ppt_url=#{url}
+		where id=#{attendanceId}
+	</update>
+	<update id="updateReport">
+		update attendance
+		set report_name=#{name},
+			report_url=#{url}
+		where id=#{attendanceId}
+	</update>
+    <update id="endAllPresentation">
+		update attendance
+		set is_present='0'
+		where klass_seminar_id=#{klassSeminarId}
+	</update>
+    <select id="selectById" resultMap="BaseResultMap">
+		select * from attendance
+		where id=#{attendanceId}
+	</select>
+
+
+</mapper>

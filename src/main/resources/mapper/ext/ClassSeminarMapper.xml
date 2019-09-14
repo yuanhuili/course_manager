@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.ClassSeminarMapper">
+
+    <resultMap id="Base" type="Management.entity.KlassSeminar">
+        <id property="id" column="id"/>
+        <id property="klassId" column="klass_id"/>
+        <id property="seminarId" column="seminar_id"/>
+        <id property="reportDDL" column="report_ddl"/>
+        <id property="seminarStatus" column="status"/>
+    </resultMap>
+
+    <insert id="add">
+        INSERT INTO `klass_seminar` (`klass_id`, `seminar_id`, `status`)
+        VALUES (#{klassSeminar.klassId}, #{klassSeminar.seminarId}, '0')
+    </insert>
+    <select id="selectClassBySeminarId" resultType="java.math.BigInteger">
+        select klass_id from `klass_seminar`
+        where seminar_id=#{seminarId}
+    </select>
+
+    <select id="selectKlassSeminar" resultMap="Base">
+        select * from klass_seminar
+        where seminar_id=#{seminarId} and klass_id=#{klassId}
+    </select>
+
+    <delete id="deleteBySeminarId">
+        delete from `klass_seminar`
+        where seminar_id=#{seminarId}
+    </delete>
+    <delete id="deleteBySeminarIdAndClassId">
+        delete  from `klass_seminar`
+        where seminar_id=#{seminarId}
+        and klass_id=#{classId}
+    </delete>
+    <select id="selectStatus" resultType="java.lang.Integer">
+        select status from `klass_seminar`
+        where seminar_id=#{seminarId}
+        LIMIT 1
+    </select>
+    <update id="updateDDL">
+        update `klass_seminar`
+        set report_ddl=#{klassSeminar.reportDDL}
+        where klass_id=#{klassSeminar.klassId}
+        and seminar_id=#{klassSeminar.seminarId}
+    </update>
+    <select id="selectDDL" resultMap="Base">
+        select * from `klass_seminar`
+        where klass_id=#{classId}
+        and seminar_id=#{seminarId}
+    </select>
+    <update id="updateStatus">
+         update `klass_seminar`
+        set status=#{klassSeminar.seminarStatus}
+        where klass_id=#{klassSeminar.klassId}
+        and seminar_id=#{klassSeminar.seminarId}
+    </update>
+    <select id="selectIdBySeminarId" resultType="java.math.BigInteger">
+        select id from `klass_seminar`
+        where seminar_id=#{seminarId}
+    </select>
+    <select id="selectId" resultType="java.math.BigInteger">
+        select id from `klass_seminar`
+        where seminar_id=#{seminarId}
+        and klass_id=#{classId}
+    </select>
+    <select id="selectById" resultMap="Base">
+        select * from `klass_seminar`
+        where id=#{classSeminarId}
+    </select>
+    <select id="getNowSeminar" resultMap="Base">
+        select * from `klass_seminar`
+        where status='1'
+    </select>
+    <select id="getNowSeminarByClassId" resultMap="Base">
+        select * from `klass_seminar`
+        where status='1'
+        and klass_id=#{klassId}
+    </select>
+</mapper>

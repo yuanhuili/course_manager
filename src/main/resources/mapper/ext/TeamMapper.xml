@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.TeamMapper">
+    <resultMap id="TeamResultMap" type="Management.entity.Team">
+        <id property="id" column="id"/>
+        <result property="klassId" column="klass_id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="leaderId" column="leader_id"/>
+        <result property="teamName" column="team_name"/>
+        <result property="teamSerial" column="team_serial"/>
+        <result property="klassSerial" column="klass_serial"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <delete id="deleteByCourseId">
+        delete from team where course_id=#{courseId}
+    </delete>
+
+    <select id="queryTeamById" resultMap="TeamResultMap">
+        select * from team where id=#{id};
+    </select>
+
+    <!--author liyuanhui-->
+    <select id="queryByCourseId" resultMap="TeamResultMap">
+        select * from team t
+        left join klass_team kt on kt.team_id=t.id
+        left join klass k on k.id=kt.klass_id
+        where k.course_id=#{courseId}
+    </select>
+
+    <select id="queryMyTeam" resultMap="TeamResultMap">
+        select distinct t.id,t.klass_id,t.course_id,t.leader_id,t.team_name,t.team_serial,t.klass_serial,t.status
+        from team t
+        left join klass_student ks on ks.klass_id=t.klass_id
+        left join team_student ts on ts.team_id=t.id
+        where t.course_id=#{courseId} and ts.student_id=#{studentId}
+    </select>
+    <select id="queryTeam" resultType="java.math.BigInteger">
+        select team_id from klass_student
+        where klass_id=#{klassId}
+        and student_id=#{studentId}
+    </select>
+    <select id="selectTeamName" resultType="java.lang.String">
+        select team_name from team
+        where id=#{id}
+    </select>
+
+    <select id="queryIdByCourseId" resultMap="TeamResultMap">
+        select id,klass_id,course_id,leader_id,team_name,team_serial,klass_serial,status from team
+        where course_id=#{courseId}
+    </select>
+
+    <insert id="insertTeam" keyProperty="team.id" useGeneratedKeys="true">
+        insert into team(klass_id,
+                         course_id,
+                         leader_id,
+                         team_name,
+                         team_serial,
+                         klass_serial,
+                         status)
+        values (#{team.klassId},
+                #{team.courseId},
+                #{team.leaderId},
+                #{team.teamName},
+                #{team.teamSerial},
+                #{team.klassSerial},
+                '1')
+    </insert>
+
+    <update id="updateTeam">
+        update team set
+                        klass_id=#{team.klassId},
+                        course_id=#{team.courseId},
+                        leader_id=#{team.leaderId},
+                        team_name=#{team.teamName},
+                        team_serial=#{team.teamSerial},
+                        status=#{team.status}
+        where id=#{team.id}
+    </update>
+
+    <delete id="deleteTeam">
+        delete from team where id=#{id};
+    </delete>
+
+    <update id="updateStatus">
+        update team set status=#{status}
+        where id=#{id}
+    </update>
+
+    <select id="getSerial" resultType="java.lang.Integer">
+        select team_serial  from team t
+        left join klass_team kt on t.id=kt.team_id
+        where kt.klass_id=#{klassId}
+    </select>
+
+
+</mapper>

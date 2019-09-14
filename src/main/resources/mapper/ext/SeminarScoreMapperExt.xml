@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.SeminarScoreMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="Management.entity.SeminarScore">
+		<result column="klass_seminar_id" property="klassSeminarId" />
+		<result column="team_id" property="teamId" />
+		<result column="total_score" property="totalScore" />
+		<result column="presentation_score" property="presentationScore" />
+		<result column="question_score" property="questionScore" />
+		<result column="report_score" property="reportScore" />
+	</resultMap>
+	<update id="updateSeminarScore">
+		update seminar_score
+        set presentation_score=#{seminarScore.presentationScore},
+        	question_score=#{seminarScore.questionScore},
+        	report_score=#{seminarScore.reportScore}
+        where klass_seminar_id=#{seminarScore.klassSeminarId}
+        and team_id=#{seminarScore.teamId}
+	</update>
+    <update id="updatePresentationScore">
+		update seminar_score
+		set presentation_score=#{seminarScore.presentationScore}
+		where klass_seminar_id=#{seminarScore.klassSeminarId}
+		and team_id=#{seminarScore.teamId}
+
+	</update>
+
+
+    <select id="querySeminarScore" resultMap="BaseResultMap">
+		select * from seminar_score
+		where team_id=#{teamId}
+		and klass_seminar_id=#{id} and klass_seminar_id is not null
+	</select>
+	<select id="selectsById" resultMap="BaseResultMap">
+		select * from seminar_score
+		where klass_seminar_id=#{id}
+	</select>
+</mapper>

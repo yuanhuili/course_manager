@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.RoundMapper">
+
+    <resultMap id="RoundResultMap" type="Management.entity.Round">
+        <id column="id" property="id"/>
+        <result column="course_id" property="courseId"/>
+        <result column="round_serial" property="roundSerial"/>
+        <result column="presentation_score_method" property="presentationScoreMethod"/>
+        <result column="report_score_method" property="reportScoreMethod"/>
+        <result column="question_score_method" property="questionScoreMethod"/>
+    </resultMap>
+
+    <select id="querryRoundByCourseId" resultMap="RoundResultMap">
+        select * from round where course_id=#{courseId}
+    </select>
+
+    <select id="querryById" resultMap="RoundResultMap">
+        select *
+        from round
+        where id=#{id}
+    </select>
+
+    <delete id="deleteRound">
+        delete from round where course_id=#{courseId}
+    </delete>
+    <insert id="addRound">
+        INSERT INTO `round` (`course_id`, `round_serial`, `presentation_score_method`, `report_score_method`, `question_score_method`)
+        VALUES (#{round.courseId}, #{round.roundSerial}, '0', '0', '1')
+    </insert>
+    <select id="selectByRound" resultType="java.math.BigInteger">
+        select id from round
+        where course_id=#{round.courseId}
+        and round_serial=#{round.roundSerial}
+        LIMIT 0,1
+    </select>
+    <select id="selectByRoundId" resultMap="RoundResultMap">
+        select * from round
+        where
+    </select>
+
+    <insert id="insertRound" keyProperty="round.id" useGeneratedKeys="true">
+        insert into round(course_id,round_serial,presentation_score_method,report_score_method,question_score_method)
+        values (#{round.courseId},
+                #{round.roundSerial},
+                #{round.presentationScoreMethod},
+                #{round.reportScoreMethod},
+                #{round.questionScoreMethod})
+    </insert>
+
+    <update id="updateRound">
+        update round set
+        presentation_score_method =#{round.presentationScoreMethod},
+        report_score_method=#{round.reportScoreMethod},
+        question_score_method=#{round.questionScoreMethod}
+        where
+        id=#{round.id}
+    </update>
+
+</mapper>

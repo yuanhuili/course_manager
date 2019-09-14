@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Management.mapper.ClassRoundMapper">
+
+    <resultMap id="BaseResultMap" type="Management.entity.KlassRound">
+        <result property="klassId" column="klass_id"/>
+        <result property="roundId" column="round_id"/>
+        <result property="enrollNumber" column="enroll_number"/>
+    </resultMap>
+
+    <select id="querryClassRound" resultMap="BaseResultMap">
+        select klass_id,round_id,enroll_number from klass_round
+        where round_id=#{roundId}
+    </select>
+
+    <insert id="insertClassRound">
+        insert into klass_round(klass_id,
+                                round_id,
+                                enroll_number)
+        values (#{klassRound.klassId},
+                #{klassRound.roundId},
+                #{klassRound.enrollNumber})
+    </insert>
+
+    <update id="updateClassRound">
+        update klass_round
+        set enroll_number=#{klassRound.enrollNumber}
+        where klass_id=#{klassRound.klassId} and round_id=#{klassRound.roundId}
+    </update>
+
+</mapper>
