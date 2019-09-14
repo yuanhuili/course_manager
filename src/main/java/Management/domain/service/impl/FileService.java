@@ -58,6 +58,5 @@ public class FileService {
             throw new RuntimeException();
         }
         return fileName.substring(typeIdx).toLowerCase();
-
     }
 }
